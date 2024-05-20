@@ -1,0 +1,26 @@
+{
+    "dataset": "cifar100",
+    "memory_size": 2000,
+    "memory_per_class": 20,
+    "fixed_memory": true,
+    "shuffle": false,
+    "init_cls": 50,
+    "increment": 10,
+    "model_name": "rne_compress",
+    "convnet_type": "cifar_resnet18_compress",
+    "num_workers": 4,
+    "init_epochs": 200,
+    "init_lr": 0.1,
+    "init_weight_decay": 5e-4,
+    "init_batch_size": 128,
+    "lr" : 0.01,
+    "batch_size": 32,
+    "epochs": 200,
+    "weight_decay": 5e-4,
+    "lr_fc": 1e-4,
+    "batch_size_fc": 512,
+    "epochs_fc": 10,
+    "device": ["0"],
+    "seed": 1
+}
+
