@@ -7,5 +7,7 @@ If the automatic installation fails, please configure the environment manually a
 
 # How to use
 We construct our project refer the PyCil library.
+
 If you wants to reproduce all the results, use the commend:
-"sh dis_train.sh"
+
+**sh dist_train.s**
