@@ -6,7 +6,7 @@ Use the commend "conda env create -f environment.yml" to build the basic environ
 If the automatic installation fails, please configure the environment manually according to the "requirements.txt" file. We do not test the installation process, any problems could be proposed in the comments section.
 
 # How to use
-We construct our project refer the PyCil library (https://github.com/G-U-N/PyCIL).If you wants to reproduce all the results, use the commend:
+We construct our project refer the PyCil library ( https://github.com/G-U-N/PyCIL ).If you wants to reproduce all the results, use the commend:
 
 <p align="center"><strong>sh dist_train.sh</strong></p>
   
