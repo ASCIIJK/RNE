@@ -6,8 +6,11 @@ Use the commend "conda env create -f environment.yml" to build the basic environ
 If the automatic installation fails, please configure the environment manually according to the "requirements.txt" file. We do not test the installation process, any problems could be proposed in the comments section.
 
 # How to use
-We construct our project refer the PyCil library.
+We construct our project refer the PyCil library.If you wants to reproduce all the results, use the commend:
 
-If you wants to reproduce all the results, use the commend:
+**sh dist_train.sh**
 
-**sh dist_train.s**
+Results will be outputs in corresponding logs, which locate in "logs/'model_name'/'settings'/". And the check_point named "taskx.pkl of last epoch at each task will also be saved in the same path".
+
+# Updates
+**2024.5.20** We build the project. And We update the code to test on CIFAR-100 for three incremental setting. 
