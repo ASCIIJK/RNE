@@ -1,5 +1,6 @@
 # RNE
 Public code for RNE, which is a new SOTA for class incremental learning!
 
-# Create 2024.05.20
-We upload the basic struture of our project.
+# Install
+Use the commend "conda env create -f environment.yml" to build the basic environment.
+If the automatic installation fails, please configure the environment manually according to the "requirements.txt" file. We do not test the installation process, any problems could be proposed in the comments section.
