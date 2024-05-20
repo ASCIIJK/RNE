@@ -8,7 +8,7 @@ If the automatic installation fails, please configure the environment manually a
 # How to use
 We construct our project refer the PyCil library.If you wants to reproduce all the results, use the commend:
 
-<p align="center">**sh dist_train.sh**</p>
+<p align="center"><strong>**sh dist_train.sh**</strong></p>
   
 Results will be outputs in corresponding logs, which locate in "logs/'model_name'/'settings'/". And the check_point named "taskx.pkl of last epoch at each task will also be saved in the same path".
 
