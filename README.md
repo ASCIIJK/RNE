@@ -10,7 +10,6 @@ We construct our project refer the PyCil library.If you wants to reproduce all t
 
 <center>
 **sh dist_train.sh**
-</center>
   
 Results will be outputs in corresponding logs, which locate in "logs/'model_name'/'settings'/". And the check_point named "taskx.pkl of last epoch at each task will also be saved in the same path".
 
