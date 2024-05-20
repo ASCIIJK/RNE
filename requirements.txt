@@ -1,0 +1,8 @@
+numpy=1.24.3
+pillow=9.5.0
+timm=0.9.12
+torch=2.0.0+cu118
+torchaudio=2.0.0+cu118
+torchsummary=1.5.1
+torchvision=0.15.0+cu118
+tqdm=4.65.0
