@@ -160,6 +160,16 @@ class RNE(object):
         for i in range(self.cur_task):
             for p in self._network.convnets[i].parameters():
                 p.requires_grad = False
+        for p in self._network.backbone.parameters():
+            p.requires_grad = False
+        for p in self._network.backbone.conv_layer1.parameters():
+            p.requires_grad = True
+        for p in self._network.backbone.conv_layer2.parameters():
+            p.requires_grad = True
+        for p in self._network.backbone.conv_layer3.parameters():
+            p.requires_grad = True
+        for p in self._network.backbone.conv_layer4.parameters():
+            p.requires_grad = True
         for p in self._network.convnets[-1].parameters():
             p.requires_grad = True
 
@@ -183,12 +193,13 @@ class RNE(object):
         )
         self.test_loader = test_loader
         # 配置优化器
-        optimizer = optim.SGD(
-            filter(lambda p: p.requires_grad, self._network.parameters()),
-            momentum=0.9,
-            lr=self.lr,
-            weight_decay=self.weight_decay,
-        )
+        optimizer = optim.SGD([
+            {'params': filter(lambda p: p.requires_grad, self._network.convnets.parameters())},
+            {'params': self._network.CRLs.parameters(), 'lr': 1e-3},
+            {'params': self._network.fc_list[0:self.cur_task-1].parameters(), 'lr': 1e-3},
+            {'params': self._network.aux_fc.parameters()},
+            {'params': filter(lambda p: p.requires_grad, self._network.backbone.parameters()), 'lr': 1e-3}
+        ], lr=self.lr, weight_decay=self.weight_decay, momentum=0.9)
 
         scheduler = optim.lr_scheduler.CosineAnnealingLR(
             optimizer=optimizer, T_max=self.epochs
