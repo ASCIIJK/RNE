@@ -61,7 +61,7 @@ class RNE(object):
 
     def after_train(self):
         self._old_network = copy.deepcopy(self._network)
-        self._old_network.freeze()  # 冻结旧模型
+        self._old_network.freeze()  
 
         # 重构回放数据集
         if self.cur_task == 0:
@@ -125,7 +125,7 @@ class RNE(object):
         )
         self.test_dataset = test_dataset
         test_dataset.labels = self.targets_map(test_dataset.labels)
-        # 构建迭代器
+
         train_loader = DataLoader(
             train_dataset, batch_size=self.init_batch_size, shuffle=True, num_workers=self.num_workers
         )
@@ -153,7 +153,7 @@ class RNE(object):
 
     def increment_train(self):
         self.cur_task += 1
-        increment_class_list = self.class_list[self.known_class:self.known_class+self.increment]    # 增量训练名单
+        increment_class_list = self.class_list[self.known_class:self.known_class+self.increment]
         self.logger.info("training classes is {}".format(increment_class_list))
         self._network.update_fc(self.known_class+self.increment)
 
@@ -175,16 +175,16 @@ class RNE(object):
 
         self.logger.info("All params: {}".format(count_parameters(self._network)))
         self.logger.info("Trainable params: {}".format(count_parameters(self._network, True)))
-        # 读取训练数据与测试数据(包含旧类样本训练主干)
+
         train_dataset = self.DataManger.get_dataset(
             source="train", class_list=increment_class_list, appendent=self.DataManger.get_memory()
         )
-        train_dataset.labels = self.targets_map(train_dataset.labels)  # 将标签映射为可训练顺序
+        train_dataset.labels = self.targets_map(train_dataset.labels)
         test_dataset = self.DataManger.get_dataset(
             source="test", class_list=self.class_list[0:self.known_class+self.increment], appendent=None
         )
-        test_dataset.labels = self.targets_map(test_dataset.labels)  # 将标签映射为可训练顺序
-        # 构建迭代器
+        test_dataset.labels = self.targets_map(test_dataset.labels)
+
         train_loader = DataLoader(
             train_dataset, batch_size=self.batch_size, shuffle=True, num_workers=self.num_workers, pin_memory=True
         )
@@ -192,7 +192,7 @@ class RNE(object):
             test_dataset, batch_size=self.batch_size, shuffle=False, num_workers=self.num_workers, pin_memory=True
         )
         self.test_loader = test_loader
-        # 配置优化器
+
         optimizer = optim.SGD([
             {'params': filter(lambda p: p.requires_grad, self._network.convnets.parameters())},
             {'params': self._network.CRLs.parameters(), 'lr': 1e-3},
@@ -554,8 +554,8 @@ class RNE(object):
     def eval_task(self, test_loader):
         model = self._network
         model.eval()
-        confusion_matrix = np.zeros((self.known_class, self.known_class), dtype=int)  # 混淆矩阵
-        task_confusion_matrix = np.zeros((self.cur_task + 1, self.cur_task + 1), dtype=int)  # 任务混淆矩阵
+        confusion_matrix = np.zeros((self.known_class, self.known_class), dtype=int) 
+        task_confusion_matrix = np.zeros((self.cur_task + 1, self.cur_task + 1), dtype=int) 
         for i, (_, inputs, targets) in enumerate(test_loader):
             inputs = inputs.to(self.device)
             with torch.no_grad():
@@ -575,7 +575,7 @@ class RNE(object):
         correct = 0.
         for i in range(self.known_class):
             correct += confusion_matrix[i, i]
-        acc = correct / confusion_matrix.sum()  # 识别准确率
+        acc = correct / confusion_matrix.sum() 
 
         if self.cur_task == 0:
             old_task = []
