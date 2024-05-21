@@ -316,8 +316,8 @@ class RNE(object):
                         2.
                         )
                     if not math.isnan(loss_old):
-                        loss += loss_old
-                        losses_old += loss_old.item()
+                        loss += 2.0 * loss_old
+                        losses_old += 2.0 * loss_old.item()
 
                 optimizer.zero_grad()
                 loss.backward()
