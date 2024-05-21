@@ -69,7 +69,7 @@ class DataManger(Dataset):
             random.shuffle(self.class_order)
         else:
             self.class_order = dataset.class_order
-        dataset.download_data()  # 载入数据
+        dataset.download_data()  
         self.setup_data()
         self._train_data, self._train_targets = dataset.train_data, dataset.train_targets
         self._test_data, self._test_targets = dataset.test_data, dataset.test_targets
@@ -83,7 +83,7 @@ class DataManger(Dataset):
         self.task_size = (len(self.class_order) - self.init_class) // self.increment
 
     def get_dataset(self, source, class_list, appendent, num=None):
-        # 获取此刻训练数据或者测试数据
+       
         if source == "train":
             x, y = self._train_data, self._train_targets
             trsf = self.train_trsf
@@ -108,7 +108,7 @@ class DataManger(Dataset):
         return Mydataset(data, targets, trsf)
 
     def get_dataset_pseudo(self, source, class_list, appendent, num=None):
-        # 获取此刻训练数据或者测试数据
+       
         if source == "train":
             x, y = self._train_data, self._train_targets
             trsf = self.train_trsf
@@ -129,7 +129,7 @@ class DataManger(Dataset):
         return Mydataset(data, targets, trsf)
 
     def _select(self, x, y, class_list, num=None):
-        # 选择当前时刻的样本
+        
         data, targets = [], []
         cur_num = 0
         index_num = list(range(len(y)))
@@ -146,26 +146,26 @@ class DataManger(Dataset):
         return data, targets
 
     def rebuild_memory(self, model, new_class_list, num):
-        # num为单个类别旧类保存的数量
+        
         if self.memory_list is None:
             for i in new_class_list:
                 data, targets = self._select_memory(i, num, model, mode='herding')
                 self.train_data_memory.append(data)
                 self.train_targets_memory.append(targets)
                 torch.cuda.empty_cache()
-            self.memory_list = new_class_list  # 更新旧类表
+            self.memory_list = new_class_list 
         else:
-            # 先删除部分旧类，使得数量满足新的num
+            
             for i in range(len(self.memory_list)):
                 data, targets = self._select_memory(self.memory_list[i], num, model, mode='herding')
                 self.train_data_memory[i] = data
                 self.train_targets_memory[i] = targets
-            # 添加新的类
+            
             for i in new_class_list:
                 data, targets = self._select_memory(i, num, model, mode='herding')
                 self.train_data_memory.append(data)
                 self.train_targets_memory.append(targets)
-            self.memory_list += new_class_list  # 更新旧类表
+            self.memory_list += new_class_list 
 
     def generate_pseudo_img(self, model, class_list, per_sample_num):
         all_samples_num = len(class_list) * per_sample_num
@@ -192,7 +192,7 @@ class DataManger(Dataset):
         print(num_samples)
 
     def _select_memory(self, class_name, num, model, mode):
-        # 先找出所有新类样本
+        
         data, targets = [], []
         x, y = self._train_data, self._train_targets
         for i in range(len(y)):
@@ -200,7 +200,7 @@ class DataManger(Dataset):
                 data.append(x[i])
                 targets.append(y[i])
         if mode == "herding":
-            # 将数据打包成迭代器
+            
             train_loader = DataLoader(Mydataset(data, targets, self.train_trsf), batch_size=128, shuffle=False, num_workers=0)
             model.eval()
             model.to(self.device)
@@ -210,7 +210,7 @@ class DataManger(Dataset):
                     if i == 0:
                         features = model.extract_vector(inputs)
                     else:
-                        features = torch.cat((features, model.extract_vector(inputs)))  # 特征向量拼接
+                        features = torch.cat((features, model.extract_vector(inputs)))  
             index = self.herding_rule(features, num)
         elif mode == "random":
             index = self.random_rule(data, targets, num)
