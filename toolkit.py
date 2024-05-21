@@ -115,24 +115,24 @@ def plot_confusion_matrix(confusion_matrix, savename, title='Confusion Matrix'):
     classes = list(range(confusion_matrix.shape[0]))
     plt.figure(figsize=(12, 8), dpi=100)
     np.set_printoptions(precision=2)
-    # 在混淆矩阵中每格的概率值
+    
     ind_array = np.arange(len(classes) + 1)
-    x, y = np.meshgrid(ind_array, ind_array)  # 生成坐标矩阵
-    diags = np.diag(cm)  # 对角TP值
-    FP = sum(cm.sum(axis=0)) - sum(np.diag(cm))  # 假正样本数
-    FN = sum(cm.sum(axis=1)) - sum(np.diag(cm))  # 假负样本数
-    TP = sum(np.diag(cm))  # 真正样本数
-    TN = sum(cm.sum().flatten()) - (FP + FN + TP)  # 真负样本数
+    x, y = np.meshgrid(ind_array, ind_array) 
+    diags = np.diag(cm)  
+    FP = sum(cm.sum(axis=0)) - sum(np.diag(cm))  
+    FN = sum(cm.sum(axis=1)) - sum(np.diag(cm)) 
+    TP = sum(np.diag(cm))  
+    TN = sum(cm.sum().flatten()) - (FP + FN + TP)  
     SUM = TP + FP
-    PRECISION = TP / (TP + FP)  # 查准率，又名准确率
-    RECALL = TP / (TP + FN)  # 查全率，又名召回率
+    PRECISION = TP / (TP + FP)  
+    RECALL = TP / (TP + FN)  
     TP_FNs, TP_FPs = [], []
-    for x_val, y_val in zip(x.flatten(), y.flatten()):  # 并行遍历
+    for x_val, y_val in zip(x.flatten(), y.flatten()):  
         max_index = len(classes)
-        if x_val != max_index and y_val != max_index:  # 绘制混淆矩阵各格数值
+        if x_val != max_index and y_val != max_index:  
             c = cm[y_val][x_val]
             plt.text(x_val, y_val, c, color='black', fontsize=15, va='center', ha='center')
-        elif x_val == max_index and y_val != max_index:  # 绘制最右列即各数据类别的查全率
+        elif x_val == max_index and y_val != max_index:  
             TP = diags[y_val]
             TP_FN = cm.sum(axis=1)[y_val]
             recall = TP / (TP_FN)
@@ -142,7 +142,7 @@ def plot_confusion_matrix(confusion_matrix, savename, title='Confusion Matrix'):
                 recall = '0'
             TP_FNs.append(TP_FN)
             plt.text(x_val, y_val, str(TP_FN) + '\n' + str(recall) + '%', color='black', va='center', ha='center')
-        elif x_val != max_index and y_val == max_index:  # 绘制最下行即各数据类别的查准率
+        elif x_val != max_index and y_val == max_index:  
             TP = diags[x_val]
             TP_FP = cm.sum(axis=0)[x_val]
             precision = TP / (TP_FP)
