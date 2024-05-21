@@ -12,5 +12,11 @@ We construct our project refering the PyCil library ( https://github.com/G-U-N/P
   
 Results will be outputs in corresponding logs, which locate in "logs/'model_name'/'settings'/". And the check_point named "taskx.pkl" of last epoch at each task will also be saved in the same path.
 
+if you just want to test the results on just one setting, you can use the commend:
+
+<p align="center"><strong>python main.py --config=./exps/[MODEL NAME].json</strong></p>
+
 # Updates
 **2024.5.20** We build the project. And we update the code to test on CIFAR-100 for three incremental setting. (include "RNE" and "RNE-compress")
+
+**2024.5.21** We update the code to test on ImageNet-100 and Food-101 for three setting (however, we do not test the result, any problems could be proposed in the comments section).
